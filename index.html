@@ -6,9 +6,9 @@
   <link rel="stylesheet" href="style.css">
   <script src="confetti.min.js"></script>
 </head>
-<body class="gradient-bg">
+<body class="bg">
   <div class="navbar">
-    <span>💼 E-Bank</span>
+    <span class="logo">INVEST BANK</span>
     <div>
       <button onclick="showPage('home')">Home</button>
       <button onclick="showPage('invest')">Invest</button>
@@ -17,31 +17,31 @@
     </div>
   </div>
 
-  <!-- HOME PAGE -->
-  <div id="home" class="page glass">
+  <!-- PAGE: HOME -->
+  <div id="home" class="page card">
     <h2>Welcome <span id="username">@user</span></h2>
-    <p>Invite & earn 1%:</p>
-    <input id="refLink" readonly onclick="copyRef()" />
-    <small>(click to copy)</small>
+    <p class="small">Invite friends & earn 1%:</p>
+    <input id="refLink" class="input" readonly onclick="copyRef()"/>
+    <small>(Tap to copy)</small>
   </div>
 
-  <!-- INVEST PAGE -->
-  <div id="invest" class="page glass" style="display:none;">
-    <h2>Invest</h2>
-    <select id="plan">
-      <option value="">Select plan</option>
+  <!-- PAGE: INVEST -->
+  <div id="invest" class="page card" style="display:none;">
+    <h2 class="center">Make Investment</h2>
+    <select id="plan" class="input">
+      <option value="">Select Plan</option>
       <option>Basic ($15–69)</option>
       <option>Classic ($200–499)</option>
       <option>Pro ($1000–1999)</option>
     </select>
-    <input id="amount" placeholder="Amount">
-    <input id="hash" placeholder="TXN Hash">
-    <button onclick="submitInvestment()">Submit</button>
-    <p id="wallet">Send USDT (TRC20) to:<br><b>TNH9tQy2UAipH9ECQDaHPkAA13Np2nS5bV</b></p>
+    <input id="amount" class="input" placeholder="Amount">
+    <input id="hash" class="input" placeholder="TXN Hash">
+    <button onclick="submitInvestment()" class="btn">Submit</button>
+    <p class="small">Send USDT-TRC20 to:<br><b>TNH9tQy2UAipH9ECQDaHPkAA13Np2nS5bV</b></p>
   </div>
 
-  <!-- PORTFOLIO PAGE -->
-  <div id="portfolio" class="page glass" style="display:none;">
+  <!-- PAGE: PORTFOLIO -->
+  <div id="portfolio" class="page card" style="display:none;">
     <h2>My Portfolio</h2>
     <p>Plan: <span id="pPlan">-</span></p>
     <p>Amount: <span id="pAmt">0</span></p>
@@ -50,13 +50,13 @@
     <p>Referrals: <span id="pRef">0</span></p>
   </div>
 
-  <!-- ADMIN PAGE -->
-  <div id="admin" class="page glass" style="display:none;">
+  <!-- PAGE: ADMIN -->
+  <div id="admin" class="page card" style="display:none;">
     <h2>Admin Panel</h2>
-    <p>(Dummy without backend)</p>
-    <input placeholder="User ID">
-    <input placeholder="Amount">
-    <button onclick="alert('Approved (fake!)')">Approve</button>
+    <p class="small">(Visual only)</p>
+    <input placeholder="User ID" class="input">
+    <input placeholder="Amount" class="input">
+    <button onclick="alert('Approved (Sample)!')" class="btn">Approve</button>
   </div>
 
 <script src="script.js"></script>
