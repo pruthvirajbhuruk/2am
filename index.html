@@ -2,63 +2,138 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Investment Mini App</title>
-  <link rel="stylesheet" href="style.css">
-  <script src="confetti.min.js"></script>
+  <title>E-Bank Mini-App</title>
+  <style>
+    /* Global Styling */
+    *{margin:0;padding:0;box-sizing:border-box;font-family:'Poppins',sans-serif}
+    body{background:#f2f2f2;color:#333;}
+    .glass{backdrop-filter:blur(15px);background:rgba(255,255,255,0.65);border-radius:16px;box-shadow:0 4px 30px rgba(0,0,0,.1);padding:20px;margin:20px auto;max-width:420px}
+    .btn{background:#d4af37;color:#fff;padding:12px 20px;border:none;border-radius:12px;font-weight:600;width:100%;cursor:pointer}
+    input,select{width:100%;padding:12px;margin-top:12px;border-radius:12px;border:1px solid #ddd}
+    h2{font-weight:700;margin-bottom:15px;color:#111;}
+    .hidden{display:none}
+    /* Navbar */
+    #navbar{position:fixed;top:0;left:0;width:100%;height:60px;background:#ffffffbb;backdrop-filter:blur(15px);display:flex;align-items:center;justify-content:space-between;padding:0 18px;box-shadow:0 2px 10px rgba(0,0,0,.1);z-index:20}
+    .brand{font-size:20px;font-weight:700}
+    .hamburger{font-size:28px;color:#d4af37;cursor:pointer}
+    /* Drawer */
+    #drawer{position:fixed;top:0;left:-230px;width:230px;height:100vh;background:#ffffff;box-shadow:2px 0 10px rgba(0,0,0,.15);padding:20px;transition:left .35s;z-index:19}
+    #drawer a{display:block;margin:15px 0;font-weight:600;color:#333;text-decoration:none;}
+  </style>
 </head>
-<body class="bg">
-  <div class="navbar">
-    <span class="logo">INVEST BANK</span>
-    <div>
-      <button onclick="showPage('home')">Home</button>
-      <button onclick="showPage('invest')">Invest</button>
-      <button onclick="showPage('portfolio')">Portfolio</button>
-      <button onclick="showPage('admin')">Admin</button>
-    </div>
-  </div>
+<body>
 
-  <!-- PAGE: HOME -->
-  <div id="home" class="page card">
-    <h2>Welcome <span id="username">@user</span></h2>
-    <p class="small">Invite friends & earn 1%:</p>
-    <input id="refLink" class="input" readonly onclick="copyRef()"/>
-    <small>(Tap to copy)</small>
-  </div>
+<!-- NAV -->
+<div id="navbar">
+  <div class="brand">E-Bank</div>
+  <div class="hamburger" onclick="toggleDrawer()">☰</div>
+</div>
 
-  <!-- PAGE: INVEST -->
-  <div id="invest" class="page card" style="display:none;">
-    <h2 class="center">Make Investment</h2>
-    <select id="plan" class="input">
-      <option value="">Select Plan</option>
-      <option>Basic ($15–69)</option>
-      <option>Classic ($200–499)</option>
-      <option>Pro ($1000–1999)</option>
-    </select>
-    <input id="amount" class="input" placeholder="Amount">
-    <input id="hash" class="input" placeholder="TXN Hash">
-    <button onclick="submitInvestment()" class="btn">Submit</button>
-    <p class="small">Send USDT-TRC20 to:<br><b>TNH9tQy2UAipH9ECQDaHPkAA13Np2nS5bV</b></p>
-  </div>
+<!-- DRAWER -->
+<div id="drawer">
+  <a href="javascript:showPage('home')">Home</a>
+  <a href="javascript:showPage('invest')">Invest</a>
+  <a href="javascript:showPage('portfolio')">Portfolio</a>
+  <a href="javascript:showPage('admin')">Admin</a>
+</div>
 
-  <!-- PAGE: PORTFOLIO -->
-  <div id="portfolio" class="page card" style="display:none;">
-    <h2>My Portfolio</h2>
-    <p>Plan: <span id="pPlan">-</span></p>
-    <p>Amount: <span id="pAmt">0</span></p>
-    <p>Next Payout: <span id="pDate">-</span></p>
-    <p>Referral Earn: <span id="pEarn">0</span> USDT</p>
-    <p>Referrals: <span id="pRef">0</span></p>
-  </div>
+<!-- PAGE: HOME -->
+<div id="home" class="glass" style="margin-top:80px;text-align:center">
+  <h2>Welcome <span id="username">@frontend_pp_bot</span></h2>
+  <p style="font-size:14px;">Invite friends & earn 1%:</p>
+  <input id="refLink" onclick="copyRef()" readonly style="cursor:pointer">
+  <small>(tap to copy)</small>
+</div>
 
-  <!-- PAGE: ADMIN -->
-  <div id="admin" class="page card" style="display:none;">
-    <h2>Admin Panel</h2>
-    <p class="small">(Visual only)</p>
-    <input placeholder="User ID" class="input">
-    <input placeholder="Amount" class="input">
-    <button onclick="alert('Approved (Sample)!')" class="btn">Approve</button>
-  </div>
+<!-- PAGE: INVEST -->
+<div id="invest" class="glass hidden" style="margin-top:80px;text-align:center">
+  <h2>Make Investment</h2>
+  <select id="plan">
+    <option value="">Select Plan</option>
+    <option>Basic ($15–69)</option>
+    <option>Classic ($200–499)</option>
+    <option>Pro ($1000–1999)</option>
+  </select>
+  <input id="amount" placeholder="Amount">
+  <input id="hash" placeholder="TXN Hash">
+  <button class="btn" onclick="submitInvestment()">Submit</button>
+  <p style="font-size:13px;margin-top:15px;">Send USDT-TRC20 to:<br><b>TNH9tQy2UAipH9ECQDaHPkAA13Np2nS5bV</b></p>
+</div>
 
-<script src="script.js"></script>
+<!-- PAGE: PORTFOLIO -->
+<div id="portfolio" class="glass hidden" style="margin-top:80px;text-align:center">
+  <h2>My Portfolio</h2>
+  <p>Plan: <b id="pPlan">-</b></p>
+  <p>Amount: <b id="pAmt">0</b> USDT</p>
+  <p>Next Payout: <b id="pDate">-</b></p>
+  <p>Ref-Earn: <b id="pEarn">0</b> USDT</p>
+  <p>Referrals: <b id="pRef">0</b></p>
+</div>
+
+<!-- PAGE: ADMIN -->
+<div id="admin" class="glass hidden" style="margin-top:80px;text-align:center">
+  <h2>Admin Panel</h2>
+  <small>(Visual only, no backend)</small>
+  <input placeholder="User ID">
+  <input placeholder="Amount">
+  <button class="btn" onclick="alert('Approved 🔥')">Approve</button>
+</div>
+
+<!-- CONFETTI LIBRARY -->
+<script>
+var confetti=function(){function t(t){var e,n=window,o={particleCount:50,angle:90,spread:45,startVelocity:45,decay:.9,gravity:1,drift:0,ticks:200,origin:{x:.5,y:.5},colors:["#D4AF37","#f9e79f","#ffeaa7","#fff3e0"],zIndex:100,disableForReducedMotion:!1};function r(t,e,n){return t(e),setTimeout(n,16)}function i(t){var e,n,r,i,s,a,w,l={x:t.x,y:t.y};for(e=[],s=0;s<o.particleCount;s++)e.push({x:l.x,y:l.y,angle:Math.random()*o.spread-o.spread/2+o.angle,velocity:o.startVelocity*Math.random()+o.startVelocity*o.decay,wobble:Math.random()*10,wobbleSpeed:.1+(.09*Math.random()),color:o.colors[Math.floor(Math.random()*o.colors.length)],ticks:0,totalTicks:o.ticks});return n=null,r=null,a=function(){s=window.innerWidth,a=window.innerHeight},i=function(){for(var t= n||a,e= r||a,i=0;i<e.length;i++){var s=e[i];s.x+=Math.cos(s.angle*(Math.PI/180))*s.velocity,s.y+=Math.sin(s.angle*(Math.PI/180))*s.velocity+o.gravity,s.velocity*=o.decay,s.ticks++,s.y>n&&e.splice(i--,1)}},function(){if(!o.disableForReducedMotion||!matchMedia("(prefers-reduced-motion)").matches){var t,e=!0;function a(){e&&(t=r?window.requestAnimationFrame:r)(function(t){i(),(r=window.innerHeight,n=document.body.scrollHeight)||(l.y<=window.innerHeight&&(l.y=window.innerHeight));for(var r=0;r<e.length;r++){var s=e[r];var a=document.createElement("div");a.style.position="fixed",a.style.top="0px",a.style.left="0px",a.style.zIndex=o.zIndex,a.style.pointerEvents="none",a.style.width="10px",a.style.height="10px",a.style.borderRadius="50%",a.style.backgroundColor=s.color,a.style.transform="translate3d("+s.x+"px,"+s.y+"px,0) rotate("+(Math.random()*360)+"deg)";document.body.appendChild(a);setTimeout(function(){a.remove()},o.ticks*16)}t(a)})}t=function(){e=!1,r&&cancelAnimationFrame(r)},a()}}}return function(t){var e=Object.assign({},o,t);return e.disableForReducedMotion&&matchMedia("(prefers-reduced-motion)").matches?function(){}:i(e.origin)}}();
+</script>
+
+<!-- MAIN JS -->
+<script>
+let user = { id: Date.now(), username: "@frontend_pp_bot" }; // static user until in Telegram
+document.getElementById("username").innerText = user.username;
+document.getElementById("refLink").value = `https://t.me/frontend_pp_bot?start=${user.id}`;
+
+// drawer
+function toggleDrawer(){ 
+  let d=document.getElementById("drawer");
+  d.style.left = (d.style.left==="0px")?"-230px":"0px";
+}
+
+// page routing
+function showPage(p){
+  ["home","invest","portfolio","admin"].forEach(id=>{
+    document.getElementById(id).classList.add("hidden");
+  });
+  document.getElementById(p).classList.remove("hidden");
+  toggleDrawer();
+}
+
+// localStorage as fake backend
+function submitInvestment(){
+  const plan = document.getElementById("plan").value;
+  const amt  = document.getElementById("amount").value;
+  const hash = document.getElementById("hash").value;
+  if(!plan || !amt || !hash) return alert("Fill all fields!");
+
+  const data = {plan, amount:amt, next:"30 days later", earn:0, ref:0};
+  localStorage.setItem("pf", JSON.stringify(data));
+  alert("Submitted ✅");
+  confetti(); // burst
+}
+
+// load portfolio + auto-refresh
+function loadPortfolio(){
+  const d = JSON.parse(localStorage.getItem("pf")||"{}");
+  document.getElementById("pPlan").innerText=d.plan || "-";
+  document.getElementById("pAmt").innerText =d.amount || "0";
+  document.getElementById("pDate").innerText=d.next||"-";
+  document.getElementById("pEarn").innerText=d.earn||"0";
+  document.getElementById("pRef").innerText =d.ref||"0";
+}
+loadPortfolio(); setInterval(loadPortfolio,3000);
+
+// copy referral
+function copyRef(){
+  navigator.clipboard.writeText(document.getElementById("refLink").value);
+  alert("Copied!");
+}
+</script>
 </body>
 </html>
